@@ -1,8 +1,13 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, Pressable } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Pressable, 
+TouchableHighlight } from 'react-native';
 import { XCircleIcon, PlusCircleIcon } from 'react-native-heroicons/solid';
 
 const NewProject = () => {
+  const createFile = () => {
+
+  }
+  
   return (
     <View style={styles.background}>
       <View style={styles.header}>
@@ -12,10 +17,16 @@ const NewProject = () => {
         </Pressable>
       </View>
       <TextInput style={styles.textbox} defaultValue='Project Name'></TextInput>
-      <Pressable style={styles.createbutton} onPress={() => {}}>
+      <TouchableHighlight underlayColor="#0D1E51" onPress={createFile}>
+        <View style={styles.createbutton}>
+          <PlusCircleIcon style={styles.createbuttonicon} color='#C5D9FF' size={42}></PlusCircleIcon>
+          <Text style={styles.createbuttontext}>Create Project</Text>
+        </View>
+      </TouchableHighlight>      
+      {/* <Pressable style={styles.createbutton} onPress={() => {}}>
         <PlusCircleIcon style={styles.createbuttonicon} color='#C5D9FF' size={42}></PlusCircleIcon>
         <Text style={styles.createbuttontext}>Create Project</Text>
-      </Pressable>
+      </Pressable> */}
     </View>
   );
 };
