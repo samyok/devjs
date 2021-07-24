@@ -7,15 +7,23 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "bundle-codemirror": "rollup -c assets/codeScreen/rollup.config.js"
   },
   "dependencies": {
+    "@codemirror/basic-setup": "^0.18.2",
+    "@codemirror/lang-javascript": "^0.18.0",
+    "@codemirror/theme-one-dark": "^0.18.1",
+    "@rollup/plugin-node-resolve": "^13.0.3",
+    "nodejs-mobile-react-native": "mattt21/nodejs-mobile-react-native",
     "react": "17.0.1",
     "react-native": "0.64.2",
+    "react-native-bootsplash": "^3.2.4",
     "react-native-heroicons": "^2.0.1",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-svg": "^12.1.1",
-    "react-native-bootsplash": "^3.2.4"
+    "react-native-webview": "^11.6.5",
+    "rollup": "^2.53.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
