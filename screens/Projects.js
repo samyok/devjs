@@ -58,7 +58,7 @@ const Projects = ({ projects }) => {
    return (
        <View style={styles.background}>
            <Text style={ styles.title }>
-               Your Projects
+               Your Projects Here
            </Text>
            <ScrollView style={styles.projectsContainer}>
                <View style={styles.newProjectContainer}>
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
         margin: 10,
         paddingBottom: 20,
     },
-    projectContainer: {
+    projectsContainer: {
         paddingTop: 10,
     },
     newProjectContainer: {
