@@ -129,7 +129,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
+   packagingOptions {
+        pickFirst 'lib/armeabi-v7a/libnode.so'
+    }
     defaultConfig {
         applicationId "com.devjs"
         minSdkVersion rootProject.ext.minSdkVersion
