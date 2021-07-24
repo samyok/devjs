@@ -15,4 +15,11 @@ module.exports = {
       },
     }),
   },
+  resolver: {
+    blacklistRE: exclusionList([
+      /\/nodejs-assets\/.*/,
+      /\/android\/.*/,
+      /\/ios\/.*/
+    ])
+  },
 };
