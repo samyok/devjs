@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, Text, View, StyleSheet } from 'react-native';
+import { ScrollView, Text, View, StyleSheet, TouchableHighlight } from 'react-native';
 import {
     ChevronRightIcon as ChevronRightIconOutline,
     PlusCircleIcon as PlusCircleIconOutline
@@ -42,29 +42,40 @@ const projectsTemp = [
 ];
 
 const Project = ({ project }) => {
+    const openProject = () => {
+        // open File directory of Project
+    };
+
     return (
-        <View style={styles.project}>
-            <View>
-                <Text style={styles.projectTitle}>{project.name}</Text>
-                <Text style={styles.lastModified}>Last Modified [input date calculations here]</Text>
+        <TouchableHighlight onPress={openProject} underlayColor="black" style={styles.projectTouchable}>
+            <View style={styles.project}>
+                <View>
+                    <Text style={styles.projectTitle}>{project.name}</Text>
+                    <Text style={styles.lastModified}>Last Modified [input date calculations here]</Text>
+                </View>
+                <ChevronRightIconOutline color='#ADBDF8' size={25}/>
             </View>
-            <ChevronRightIconOutline color='#ADBDF8' size={25}/>
-        </View>
+        </TouchableHighlight>
     );
 };
 
 
 const Projects = ({ projects }) => {
+    const newProject = () => {
+        // go to new project page
+    };
    return (
        <View style={styles.background}>
            <Text style={ styles.title }>
-               Your Projects Here
+               Your Projects
            </Text>
-           <ScrollView style={styles.projectsContainer}>
-               <View style={styles.newProjectContainer}>
-                   <PlusCircleIconOutline color='#C5D9FF' size={18} />
-                   <Text style={styles.newProject}>New Project</Text>
-               </View>
+           <ScrollView>
+               <TouchableHighlight onPress={newProject} underlayColor="black" style={styles.newProjectTouchable}>
+                   <View style={styles.newProjectContainer}>
+                       <PlusCircleIconOutline color='#C5D9FF' size={18} />
+                       <Text style={styles.newProject}>New Project</Text>
+                   </View>
+               </TouchableHighlight>
                { projectsTemp.map((project) => <Project key={ project.name } project={project}/>)}
            </ScrollView>
        </View>
@@ -86,19 +97,17 @@ const styles = StyleSheet.create({
         margin: 10,
         paddingBottom: 20,
     },
-    projectsContainer: {
-        paddingTop: 10,
-    },
-    newProjectContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#4D6BD6',
-        paddingVertical: 12,
-        paddingHorizontal: 20,
+    newProjectTouchable: {
+        alignSelf: 'center',
         borderRadius: 9,
         width: 335,
         marginVertical: 6,
-        alignSelf: 'center',
+    },
+    newProjectContainer: {
+        flexDirection: 'row',
+        backgroundColor: '#4D6BD6',
+        padding: 12,
+        borderRadius: 9,
         justifyContent: 'center',
     },
     newProject: {
@@ -108,10 +117,13 @@ const styles = StyleSheet.create({
         color: 'white',
         marginLeft: 10,
     },
-    project: {
-        backgroundColor: '#2B47A4',
+    projectTouchable: {
+        borderRadius: 10,
         margin: 6,
         marginHorizontal: 10,
+    },
+    project: {
+        backgroundColor: '#2B47A4',
         borderRadius: 10,
         padding: 12,
         flexDirection: 'row',
