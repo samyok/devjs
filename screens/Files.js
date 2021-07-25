@@ -7,34 +7,35 @@ import {
     PlusCircleIcon as PlusCircleIconOutline
 } from 'react-native-heroicons/outline';
 
-const File = ({ file, margin }) => {
+const File = ({ file, margin, navigation }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const openFile = () => {
-        const newIsOpen = !isOpen;
-        setIsOpen(newIsOpen);
+        // open folder dropdown
+        if (file.isDir) {
+            const newIsOpen = !isOpen;
+            setIsOpen(newIsOpen);
+        } else {
+            // open editor panel
+            navigation.navigate('Editor');
+        }
     };
 
     return (
         <View>
             <TouchableHighlight onPress={openFile} underlayColor="black" style={[styles.touchable, { marginLeft: margin }]}>
-                <View style={styles.file} onPress={openFile}>
+                <View style={styles.file}>
                     <View>
-                        <Text style={styles.fileTitle}>
-                            {file.data.name}{file.isDir ? '/' : ''}
+                        <Text style={styles.fileTitle}> {file.data.name}{file.isDir ? '/' : ''}
                             <Text style={styles.fileSize}>   {file.data.size} B</Text>
                         </Text>
                         <Text style={styles.lastModified}>Last Modified {dayjs(file.data.mtime).fromNow()}</Text>
                     </View>
-                    {file.isDir ? ( isOpen ?
-                        <ChevronDownIconOutline color='#ADBDF8' size={25}/> : <ChevronRightIconOutline color='#ADBDF8' size={25}/>
-                    ) : <></>}
+                    {file.isDir ? ( isOpen ? <ChevronDownIconOutline color='#ADBDF8' size={25}/> : <ChevronRightIconOutline color='#ADBDF8' size={25}/>):<></>}
                 </View>
             </TouchableHighlight>
             <ScrollView>
-                { file.isDir ? ( isOpen ?
-                    file.children.map((subFile) => <File key={ subFile.data.name } file={subFile} margin={margin + 20}/>) : <></>
-                ) : <></> }
+                {file.isDir && isOpen ? file.children.map((subFile) => <File key={ subFile.data.name } file={subFile} navigation={navigation} margin={margin + 15}/>):<></>}
             </ScrollView>
         </View>
     );
@@ -60,7 +61,7 @@ const Files = ({ navigation }) => {
                         <Text style={styles.newFile}>New File</Text>
                     </View>
                 </TouchableHighlight>
-                { files.map((file) => <File key={ file.data.name } file={file} margin={10}/>)}
+                { files.map((file) => <File key={ file.data.name } file={file} navigation={navigation} margin={10}/>)}
             </ScrollView>
         </View>
     );
