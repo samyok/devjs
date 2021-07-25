@@ -5,10 +5,9 @@
  * @format
  * @flow strict-local
  */
-import nodejs from 'nodejs-mobile-react-native';
 
-import type {Node} from "react";
 import React, {useEffect} from "react";
+
 import RNBootSplash from "react-native-bootsplash";
 
 import {StyleSheet, Text, useColorScheme, View} from "react-native";
@@ -16,82 +15,68 @@ import {StyleSheet, Text, useColorScheme, View} from "react-native";
 import {Colors,} from "react-native/Libraries/NewAppScreen";
 
 import Projects from './screens/Projects';
+import Files from './screens/Files';
+import NewProject from './screens/NewProject';
+import NewFile from './screens/NewFile';
 
+// import { NavigationContainer } from '@react-navigation/native';
+// import { createStackNavigator } from '@react-navigation/stack';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 
-const Section = ({children, title}): Node => {
-    const isDarkMode = useColorScheme() === "dark";
+// import type {Node} from "react";
+// import nodejs from 'nodejs-mobile-react-native';
+// import RNBootSplash from "react-native-bootsplash";
 
+// create a stack navigator
+// const Stack = createStackNavigator();
 
-    return (
-        <View style={styles.sectionContainer}>
-            <Text
-                style={[
-                    styles.sectionTitle,
-                    {
-                        color: isDarkMode ? Colors.white : Colors.black,
-                    },
-                ]}>
-                {title}
-            </Text>
-            <Text
-                style={[
-                    styles.sectionDescription,
-                    {
-                        color: isDarkMode ? Colors.light : Colors.dark,
-                    },
-                ]}>
-                {children}
-            </Text>
-        </View>
-    );
-};
+// const App = () => {
+//     useEffect(() => {
+//         setTimeout(() => {
+//             RNBootSplash.hide({fade: true});
+//         }, 1500);
+//
+//         nodejs.start("main.js");
+//         nodejs.channel.addListener(
+//             "message",
+//             (msg) => {
+//                 alert("From node: " + msg);
+//             }
+//         );
+//     }, []);
+//     return (
+//         <NavigationContainer>
+//             <Stack.Navigator initialRouteName={'ProjectsScreen'}>
+//                 <Stack.Screen name='ProjectsScreen' component={Projects} />
+//             </Stack.Navigator>
+//         </NavigationContainer>
+//     );
+// };
 
-const App: () => Node = () => {
-    const isDarkMode = useColorScheme() === "dark";
-
-    const backgroundStyle = {
-        backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    };
-    // RNBootSplash.hide({fade: true});
-    useEffect(() => {
-        setTimeout(() => {
-            RNBootSplash.hide({fade: true});
-        }, 1500);
-
-    }, []);
-
-    useEffect(() => {
-
-        nodejs.start("main.js");
-        nodejs.channel.addListener(
-            "message",
-            (msg) => {
-                console.log("From node: " + msg);
-            }
-        );
-    }, [])
-    return (
-        <Projects/>
-    );
-};
-
-const styles = StyleSheet.create({
-    sectionContainer: {
-        marginTop: 32,
-        paddingHorizontal: 24,
+const AppNavigator = createStackNavigator(
+    {
+        Projects: Projects,
+        NewProject: NewProject,
+        NewFile: NewFile,
+        Files: Files,
+        // Editor:
     },
-    sectionTitle: {
-        fontSize: 24,
-        fontWeight: "600",
-    },
-    sectionDescription: {
-        marginTop: 8,
-        fontSize: 18,
-        fontWeight: "400",
-    },
-    highlight: {
-        fontWeight: "700",
-    },
-});
+    {
+        initialRouteName: 'Projects',
+    }
+);
+
+const AppContainer = createAppContainer(AppNavigator);
+
+const App = () => {
+    return <AppContainer />;
+}
+
+// export default class App extends React.Component {
+//     render() {
+//         return <AppContainer />;
+//     }
+// }
 
 export default App;

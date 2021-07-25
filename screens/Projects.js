@@ -5,15 +5,17 @@ import {
     PlusCircleIcon as PlusCircleIconOutline
 } from 'react-native-heroicons/outline';
 import {readDir} from "../assets/FileSystem";
+import nodejs from "nodejs-mobile-react-native";
 import LinearGradient from "react-native-linear-gradient";
 import dayjs from 'dayjs';
 import WebView from "react-native-webview";
 const relativeTime = require('dayjs/plugin/relativeTime')
 dayjs.extend(relativeTime)
 
-const Project = ({project}) => {
+const Project = ({ project, navigation }) => {
+    // open File directory of Project
     const openProject = () => {
-        // open File directory of Project
+        navigation.push('Files', { files: project.children, name: project.data.name });
     };
     return (
         <TouchableHighlight onPress={openProject} underlayColor="black" style={styles.projectTouchable}>
@@ -29,7 +31,9 @@ const Project = ({project}) => {
 };
 
 
-const Projects = () => {
+const Projects = ({ navigation }) => {
+    const [data, setData] = useState(projectsTemp);
+
     const newProject = () => {
         // go to new project page
     };
@@ -44,6 +48,18 @@ const Projects = () => {
 
         readDirectory().then(() => console.log('test - read dir'));
     }, [])
+
+    useEffect(() => {
+        setTimeout(() => {
+            RNBootSplash.hide({fade: true});
+        }, 1500);
+
+    }, []);
+
+    // navigate to creating a new project
+    const newProject = () => {
+        navigation.push('NewProject');
+    };
 
     return (
         <LinearGradient start={{x: 1, y: 0}} end={{x: 0, y:1}} colors={['#6783E6','#7b94fc', '#a9bdfc', '#ADBDF8']} style={styles.background}>
@@ -76,7 +92,6 @@ const Projects = () => {
                     top: 0,
                     left: 0,
                 }} source={{uri: 'https://cdn.samyok.us/particles.html'}} />
-
             </ScrollView>
         </LinearGradient>
 
