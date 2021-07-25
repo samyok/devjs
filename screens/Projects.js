@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
+import RNBootSplash from "react-native-bootsplash";
 import {ScrollView, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import {
     ChevronRightIcon as ChevronRightIconOutline,
     PlusCircleIcon as PlusCircleIconOutline
 } from 'react-native-heroicons/outline';
 import {readDir} from "../assets/FileSystem";
+import nodejs from "nodejs-mobile-react-native";
 
 
 const projectsTemp = [
@@ -62,6 +64,12 @@ const Project = ({project}) => {
 
 
 const Projects = ({projects}) => {
+    useEffect(() => {
+        setTimeout(() => {
+            RNBootSplash.hide({fade: true});
+        }, 1500);
+
+    }, []);
     const newProject = () => {
         // go to new project page
     };
