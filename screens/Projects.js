@@ -6,20 +6,19 @@ import {
 } from 'react-native-heroicons/outline';
 
 import {readDir} from "../assets/FileSystem";
-import nodejs from "nodejs-mobile-react-native";
 
 import RNBootSplash from "react-native-bootsplash";
-import LinearGradient from "react-native-linear-gradient";
-import WebView from "react-native-webview";
-
+import GSPView from "../assets/GradientParticleScrollView";
 import dayjs from 'dayjs';
+
 const relativeTime = require('dayjs/plugin/relativeTime')
 dayjs.extend(relativeTime)
 
-const Project = ({ project, navigation }) => {
+const Project = ({project, navigation}) => {
+
     // open File directory of Project
     const openProject = () => {
-        navigation.push('Files', { files: project.children, name: project.data.name });
+        navigation.push('Files', {files: project.children, name: project.data.name});
     };
     return (
         <TouchableHighlight onPress={openProject} underlayColor="black" style={styles.projectTouchable}>
@@ -35,63 +34,8 @@ const Project = ({ project, navigation }) => {
 };
 
 
-const Projects = ({ navigation }) => {
-    const [data, setData] = useState([
-        {
-            "isDir": false,
-            "data": {
-                "ctime": null,
-                "mtime": "2021-07-25T01:43:37.000Z",
-                "name": "test.txt",
-                "path": "/data/user/0/com.devjs/files/project_data/test.txt",
-                "size": 7
-            }
-        },
-        {
-            "isDir": true,
-            "data": {
-                "ctime": null,
-                "mtime": "2021-07-25T01:43:52.000Z",
-                "name": "project_1",
-                "path": "/data/user/0/com.devjs/files/project_data/project_1",
-                "size": 4096
-            },
-            "children": [
-                {
-                    "isDir": false,
-                    "data": {
-                        "ctime": null,
-                        "mtime": "2021-07-25T01:43:52.000Z",
-                        "name": "test.txt",
-                        "path": "/data/user/0/com.devjs/files/project_data/project_1/test.txt",
-                        "size": 7
-                    }
-                }
-            ]
-        },
-        {
-            "isDir": true,
-            "data": {
-                "ctime": null,
-                "mtime": "2021-07-25T01:44:15.000Z",
-                "name": "project_2",
-                "path": "/data/user/0/com.devjs/files/project_data/project_2",
-                "size": 4096
-            },
-            "children": [
-                {
-                    "isDir": false,
-                    "data": {
-                        "ctime": null,
-                        "mtime": "2021-07-25T01:52:05.000Z",
-                        "name": "test.txt",
-                        "path": "/data/user/0/com.devjs/files/project_data/project_2/test.txt",
-                        "size": 7
-                    }
-                }
-            ]
-        }
-    ]);
+const Projects = ({navigation}) => {
+    const [data, setData] = useState([]);
     // useEffect(() => {
     //     async function readDirectory() {
     //         // let y = await writeFile('project_2/test.txt', 'testing');
@@ -104,10 +48,18 @@ const Projects = ({ navigation }) => {
     // }, [])
 
     useEffect(() => {
-        setTimeout(() => {
-            RNBootSplash.hide({fade: true});
-        }, 1500);
+        (async () => {
+            let files = await readDir('');
+            setData(files);
+            await RNBootSplash.hide({slide: true});
+        })();
     }, []);
+
+    useEffect(() => {
+        navigation.addListener('didFocus', () => {
+            readDir('').then(setData);
+        });
+    }, [navigation]);
 
     // navigate to creating a new project
     const newProject = () => {
@@ -115,17 +67,7 @@ const Projects = ({ navigation }) => {
     };
 
     return (
-        <LinearGradient start={{x: 1, y: 0}} end={{x: 0, y:1}} colors={['#6783E6','#7b94fc', '#a9bdfc', '#ADBDF8']} style={styles.background}>
-            <ScrollView style={styles.background}>
-                <WebView style={{
-                    backgroundColor: 'transparent',
-                    height: Dimensions.get('window').height,
-                    width: Dimensions.get('window').width,
-                    // position: 'absolute',
-                    // top: 0,
-                    // left: 0
-                }} source={{uri: 'https://cdn.samyok.us/particles.html'}} />
-
+        <GSPView>
                 <Text style={styles.title}>
                     Your Projects
                 </Text>
@@ -136,17 +78,9 @@ const Projects = ({ navigation }) => {
                     </View>
                 </TouchableHighlight>
                 {data.filter(p => p.isDir).map((project, index) => <Project key={JSON.stringify({index, project})}
-                                                                            project={project} navigation={navigation}/>)}
-                <WebView style={{
-                    backgroundColor: 'red',
-                    height: Dimensions.get('window').height,
-                    width: Dimensions.get('window').width,
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                }} source={{uri: 'https://cdn.samyok.us/particles.html'}} />
-            </ScrollView>
-        </LinearGradient>
+                                                                            project={project}
+                                                                            navigation={navigation}/>)}
+        </GSPView>
     );
 };
 
@@ -164,7 +98,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         top: 39,
         margin: 10,
-        marginTop: -1*Dimensions.get('window').height+10,
         paddingBottom: 50,
     },
     newProjectTouchable: {

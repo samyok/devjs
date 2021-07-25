@@ -1,9 +1,10 @@
-import React, {useEffect} from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableHighlight } from 'react-native';
-import { PlusCircleIcon as PlusCircleIconOutline } from 'react-native-heroicons/outline';
+import React, {useEffect, useState} from 'react';
+import {Platform, StyleSheet, Text, TextInput, TouchableHighlight, View} from 'react-native';
+import {PlusCircleIcon as PlusCircleIconOutline} from 'react-native-heroicons/outline';
 import RNBootSplash from "react-native-bootsplash";
+import {writeFile} from "../assets/FileSystem";
 
-const NewFile = () => {
+const NewFile = ({navigation}) => {
     useEffect(() => {
         setTimeout(() => {
             RNBootSplash.hide({fade: true});
@@ -11,17 +12,31 @@ const NewFile = () => {
 
     }, []);
 
+    const [newFileName, setNewFileName] = useState('');
     const createProject = () => {
-        // create new project
+        writeFile(navigation.getParam('project') + '/' + newFileName, 'Hello, world!')
+            .then((r) => {
+                console.log(r);
+                navigation.goBack();
+            })
     };
+
 
     return (
         <View style={styles.background}>
             <Text style={styles.heading}>New File</Text>
-            <TextInput style={styles.textbox} placeholder={'File Name'} placeholderTextColor={'#C5D9FF80'}></TextInput>
-            <TouchableHighlight style={styles.createTouchable} underlayColor="#0D1E51" onPress={createProject}>
+            <TextInput style={styles.textbox}
+                       placeholder={'File Name'}
+                       placeholderTextColor={'#C5D9FF80'}
+                       value={newFileName}
+                       onChangeText={ev => {
+                           setNewFileName(ev);
+                       }}
+            />
+            <TouchableHighlight style={styles.createTouchable} underlayColor="#0D1E51"
+                                onPress={createProject.bind(this)}>
                 <View style={styles.createButton}>
-                    <PlusCircleIconOutline color='#C5D9FF' size={30}></PlusCircleIconOutline>
+                    <PlusCircleIconOutline color='#C5D9FF' size={30}/>
                     <Text style={styles.createButtonText}>Create File</Text>
                 </View>
             </TouchableHighlight>
@@ -37,14 +52,15 @@ const styles = StyleSheet.create({
     },
     heading: {
         padding: 20,
-        fontFamily: 'Inter',
+        // fontFamily: 'Inter',
         fontSize: 36,
         fontWeight: 'bold',
         textAlign: 'center',
-        color: 'white'
+        color: 'white',
+        marginTop: 30
     },
     textbox: {
-        fontFamily: 'monospace',
+        fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace',
         backgroundColor: '#0D1E51',
         color: '#C5D9FF80',
         fontSize: 20,

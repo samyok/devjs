@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import dayjs from "dayjs";
-import { ScrollView, Text, View, StyleSheet, TouchableHighlight } from 'react-native';
+import {Platform, ScrollView, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import {
-    ChevronRightIcon as ChevronRightIconOutline,
     ChevronDownIcon as ChevronDownIconOutline,
+    ChevronRightIcon as ChevronRightIconOutline,
     PlusCircleIcon as PlusCircleIconOutline
 } from 'react-native-heroicons/outline';
+import GSPView from "../assets/GradientParticleScrollView";
+import {readDir} from "../assets/FileSystem";
 
-const File = ({ file, margin, navigation }) => {
+const File = ({file, margin, navigation}) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const openFile = () => {
@@ -23,7 +25,8 @@ const File = ({ file, margin, navigation }) => {
 
     return (
         <View>
-            <TouchableHighlight onPress={openFile} underlayColor="black" style={[styles.touchable, { marginLeft: margin }]}>
+            <TouchableHighlight onPress={openFile} underlayColor="black"
+                                style={[styles.touchable, {marginLeft: margin}]}>
                 <View style={styles.file}>
                     <View>
                         <Text style={styles.fileTitle}> {file.data.name}{file.isDir ? '/' : ''}
@@ -31,39 +34,47 @@ const File = ({ file, margin, navigation }) => {
                         </Text>
                         <Text style={styles.lastModified}>Last Modified {dayjs(file.data.mtime).fromNow()}</Text>
                     </View>
-                    {file.isDir ? ( isOpen ? <ChevronDownIconOutline color='#ADBDF8' size={25}/> : <ChevronRightIconOutline color='#ADBDF8' size={25}/>):<></>}
+                    {file.isDir ? (isOpen ? <ChevronDownIconOutline color='#ADBDF8' size={25}/> :
+                        <ChevronRightIconOutline color='#ADBDF8' size={25}/>) : <></>}
                 </View>
             </TouchableHighlight>
             <ScrollView>
-                {file.isDir && isOpen ? file.children.map((subFile) => <File key={ subFile.data.name } file={subFile} navigation={navigation} margin={margin + 15}/>):<></>}
+                {file.isDir && isOpen ? file.children.map((subFile) => <File key={subFile.data.name} file={subFile}
+                                                                             navigation={navigation}
+                                                                             margin={margin + 15}/>) : <></>}
             </ScrollView>
         </View>
     );
 };
 
-const Files = ({ navigation }) => {
+const Files = ({navigation}) => {
     // go to new file page
     const newFile = () => {
-        navigation.push('NewFile');
+        navigation.push('NewFile', {project: navigation.getParam('name')});
     };
 
-    const files = navigation.getParam('files', []);
+    const [files, setFiles] = useState(navigation.getParam('files', []));
+    // const files = navigation.getParam('files', []);
 
+    useEffect(() => {
+        navigation.addListener('didFocus', () => {
+            readDir(navigation.getParam('name')).then(setFiles);
+        });
+    }, [navigation]);
     return (
-        <View style={styles.background}>
-            <Text style={ styles.title }>
-                { navigation.getParam('name', 'Project Files') }
+        <GSPView style={styles.background}>
+
+            <Text style={styles.title}>
+                {navigation.getParam('name', 'Project Files')}
             </Text>
-            <ScrollView style={styles.filesContainer}>
-                <TouchableHighlight onPress={newFile} underlayColor="black" style={styles.newFileTouchable}>
-                    <View style={styles.newFileContainer}>
-                        <PlusCircleIconOutline color='#C5D9FF' size={18} />
-                        <Text style={styles.newFile}>New File</Text>
-                    </View>
-                </TouchableHighlight>
-                { files.map((file) => <File key={ file.data.name } file={file} navigation={navigation} margin={10}/>)}
-            </ScrollView>
-        </View>
+            <TouchableHighlight onPress={newFile} underlayColor="black" style={styles.newFileTouchable}>
+                <View style={styles.newFileContainer}>
+                    <PlusCircleIconOutline color='#C5D9FF' size={18}/>
+                    <Text style={styles.newFile}>New File</Text>
+                </View>
+            </TouchableHighlight>
+            {files.map((file) => <File key={file.data.name} file={file} navigation={navigation} margin={10}/>)}
+        </GSPView>
     );
 };
 
@@ -73,7 +84,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#6783E6',
     },
     title: {
-        fontFamily: 'monospace',
+        fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace',
         backgroundColor: '#0D1E51',
         color: '#C5D9FF',
         fontSize: 36,
@@ -81,6 +92,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         top: 19,
         margin: 10,
+        marginTop: 30,
         paddingHorizontal: 6,
     },
     filesContainer: {
