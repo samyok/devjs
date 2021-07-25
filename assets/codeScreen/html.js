@@ -12,6 +12,7 @@ export default `
 <!DOCTYPE html>
 <html>
     <head>
+        <meta name="viewport" content="user-scalable=0">
         <style>
             *, *:before, *:after {
                 box-sizing: border-box;

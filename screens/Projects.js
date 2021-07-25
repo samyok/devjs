@@ -1,60 +1,26 @@
 import React, {useEffect, useState} from 'react';
 import RNBootSplash from "react-native-bootsplash";
-import {ScrollView, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import {SafeAreaView, ScrollView, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import {
     ChevronRightIcon as ChevronRightIconOutline,
     PlusCircleIcon as PlusCircleIconOutline
 } from 'react-native-heroicons/outline';
-import {readDir} from "../assets/FileSystem";
+import {readDir, writeFile} from "../assets/FileSystem";
 import nodejs from "nodejs-mobile-react-native";
-
-
-const projectsTemp = [
-    {
-        name: "Project 1",
-        date: new Date(),
-    },
-    {
-        name: 'Project 2',
-        date: new Date(),
-    },
-    {
-        name: 'Project 3',
-        date: new Date(),
-    },
-    {
-        name: 'Project 4',
-        date: new Date(),
-    },
-    {
-        name: 'Project 5',
-        date: new Date(),
-    },
-    {
-        name: 'Project 6',
-        date: new Date(),
-    },
-    {
-        name: 'Project 7',
-        date: new Date(),
-    },
-    {
-        name: 'Project 8',
-        date: new Date(),
-    }
-];
+import dayjs from 'dayjs';
+const relativeTime = require('dayjs/plugin/relativeTime')
+dayjs.extend(relativeTime)
 
 const Project = ({project}) => {
     const openProject = () => {
         // open File directory of Project
     };
-
     return (
         <TouchableHighlight onPress={openProject} underlayColor="black" style={styles.projectTouchable}>
             <View style={styles.project}>
                 <View>
-                    <Text style={styles.projectTitle}>{project.name}</Text>
-                    <Text style={styles.lastModified}>Last Modified [input date calculations here]</Text>
+                    <Text style={styles.projectTitle}>{project.data.name}</Text>
+                    <Text style={styles.lastModified}>Last Modified {dayjs(project.data.mtime).fromNow()}</Text>
                 </View>
                 <ChevronRightIconOutline color='#ADBDF8' size={25}/>
             </View>
@@ -63,41 +29,35 @@ const Project = ({project}) => {
 };
 
 
-const Projects = ({projects}) => {
-    useEffect(() => {
-        setTimeout(() => {
-            RNBootSplash.hide({fade: true});
-        }, 1500);
-
-    }, []);
+const Projects = () => {
     const newProject = () => {
         // go to new project page
     };
-    // const [data, setData] = useState({});
-    // useEffect(() => {
-    //     async function readDirectory () {
-    //         let x = readDir('')
-    //         setData(x);
-    //     }
-    //     readDirectory().then(() => console.log('test - read dir'));
-    // }, [])
+    const [data, setData] = useState([]);
+    useEffect(() => {
+        async function readDirectory () {
+            // let y = await writeFile('project_2/test.txt', 'testing');
+            let x = await readDir('')
+            console.log(JSON.stringify(x, null, 4));
+            setData(x);
+        }
+        readDirectory().then(() => console.log('test - read dir'));
+    }, [])
 
     return (
         <View style={styles.background}>
-            <Text style={styles.title}>
-                Your Projects
-            </Text>
-            {/*<Text>*/}
-                {/*{JSON.stringify(data)}*/}
-            {/*</Text>*/}
+
             <ScrollView>
+                <Text style={styles.title}>
+                    Your Projects
+                </Text>
                 <TouchableHighlight onPress={newProject} underlayColor="black" style={styles.newProjectTouchable}>
                     <View style={styles.newProjectContainer}>
                         <PlusCircleIconOutline color='#C5D9FF' size={18}/>
                         <Text style={styles.newProject}>New Project</Text>
                     </View>
                 </TouchableHighlight>
-                {projectsTemp.map((project) => <Project key={project.name} project={project}/>)}
+                {data.filter(p => p.isDir).map((project, index) => <Project key={JSON.stringify({index, project})} project={project}/>)}
             </ScrollView>
         </View>
     );
@@ -114,9 +74,9 @@ const styles = StyleSheet.create({
         fontSize: 36,
         fontWeight: 'bold',
         alignSelf: 'center',
-        top: 19,
+        top: 39,
         margin: 10,
-        paddingBottom: 20,
+        paddingBottom: 50,
     },
     newProjectTouchable: {
         alignSelf: 'center',

@@ -11,11 +11,11 @@ import type {Node} from "react";
 import React, {useEffect} from "react";
 import RNBootSplash from "react-native-bootsplash";
 
-import {SafeAreaView, StyleSheet, Text, useColorScheme, View} from "react-native";
+import {StyleSheet, Text, useColorScheme, View} from "react-native";
 
 import {Colors,} from "react-native/Libraries/NewAppScreen";
 
-import Projects from './screens/Projects';
+import Projects from './screens/code';
 
 
 const Section = ({children, title}): Node => {
@@ -52,19 +52,24 @@ const App: () => Node = () => {
     const backgroundStyle = {
         backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
     };
+    // RNBootSplash.hide({fade: true});
     useEffect(() => {
         setTimeout(() => {
             RNBootSplash.hide({fade: true});
         }, 1500);
 
+    }, []);
+
+    useEffect(() => {
+
         nodejs.start("main.js");
         nodejs.channel.addListener(
             "message",
             (msg) => {
-                alert("From node: " + msg);
+                console.log("From node: " + msg);
             }
         );
-    }, []);
+    }, [])
     return (
         <Projects/>
     );
