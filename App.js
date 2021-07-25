@@ -7,6 +7,13 @@
  */
 
 import React, {useEffect} from "react";
+
+import RNBootSplash from "react-native-bootsplash";
+
+import {StyleSheet, Text, useColorScheme, View} from "react-native";
+
+import {Colors,} from "react-native/Libraries/NewAppScreen";
+
 import Projects from './screens/Projects';
 import Files from './screens/Files';
 import NewProject from './screens/NewProject';
