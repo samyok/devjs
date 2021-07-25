@@ -63,16 +63,19 @@ const Project = ({project}) => {
 };
 
 
-const Projects = ({projects}) => {
+const Projects = ({ projects, navigation }) => {
     useEffect(() => {
         setTimeout(() => {
             RNBootSplash.hide({fade: true});
         }, 1500);
 
     }, []);
+
+    // navigate to creating a new project
     const newProject = () => {
-        // go to new project page
+        navigation.push('NewProject');
     };
+
     // const [data, setData] = useState({});
     // useEffect(() => {
     //     async function readDirectory () {
