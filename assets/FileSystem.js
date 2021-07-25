@@ -49,5 +49,5 @@ export async function readDir(dir) {
 }
 
 export async function mkProject(projectName) {
-
+    return await RNFS.mkdir(root + projectName);
 }
