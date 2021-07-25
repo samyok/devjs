@@ -1,8 +1,15 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableHighlight } from 'react-native';
-import { XCircleIcon, PlusCircleIcon } from 'react-native-heroicons/solid';
+import { PlusCircleIcon as PlusCircleIconOutline } from 'react-native-heroicons/outline';
+import RNBootSplash from "react-native-bootsplash";
 
 const NewProject = () => {
+  useEffect(() => {
+    setTimeout(() => {
+      RNBootSplash.hide({fade: true});
+    }, 1500);
+
+  }, []);
 
   const createProject = () => {
     // create new project
@@ -10,23 +17,14 @@ const NewProject = () => {
   
   return (
     <View style={styles.background}>
-      <View style={styles.header}>
-        <Text style={styles.heading}>New Project</Text>
-        <TouchableHighlight style={styles.closetouchable} underlayColor="#6783E6" onPress={() => {}}>
-          <XCircleIcon style={styles.closebutton} color='#C5D9FF' size={42}/>
-        </TouchableHighlight>
-      </View>
-      <TextInput style={styles.textbox} defaultValue='Project Name'></TextInput>
-      <TouchableHighlight style={styles.createtouchable} underlayColor="#0D1E51" onPress={createProject}>
-        <View style={styles.createbutton}>
-          <PlusCircleIcon style={styles.createbuttonicon} color='#C5D9FF' size={42}></PlusCircleIcon>
-          <Text style={styles.createbuttontext}>Create Project</Text>
+      <Text style={styles.heading}>New Project</Text>
+      <TextInput style={styles.textbox} placeholder={'Project Name'} placeholderTextColor={'#C5D9FF80'}></TextInput>
+      <TouchableHighlight style={styles.createTouchable} underlayColor="#0D1E51" onPress={createProject}>
+        <View style={styles.createButton}>
+          <PlusCircleIconOutline color='#C5D9FF' size={30}></PlusCircleIconOutline>
+          <Text style={styles.createButtonText}>Create Project</Text>
         </View>
-      </TouchableHighlight>      
-      {/* <Pressable style={styles.createbutton} onPress={() => {}}>
-        <PlusCircleIcon style={styles.createbuttonicon} color='#C5D9FF' size={42}></PlusCircleIcon>
-        <Text style={styles.createbuttontext}>Create Project</Text>
-      </Pressable> */}
+      </TouchableHighlight>
     </View>
   );
 };
@@ -37,54 +35,41 @@ const styles = StyleSheet.create({
     backgroundColor: '#6783E6',
     alignItems: 'center'
   },
-  header: {
-    flexDirection: 'row',
-    padding: 30
-  },
   heading: {
-    flex: 1,
+    padding: 20,
     fontFamily: 'Inter',
     fontSize: 36,
     fontWeight: 'bold',
     textAlign: 'center',
-    color: '#fff'
-  },
-  closetouchable: {
-    borderRadius: 10
-  },
-  closebutton: {
-    flex: 1,
-    color: '#C5D9FF'
+    color: 'white'
   },
   textbox: {
+    fontFamily: 'monospace',
     backgroundColor: '#0D1E51',
     color: '#C5D9FF80',
-    fontSize: 24,
-    height: 80,
+    fontSize: 20,
     width: '90%',
-    paddingLeft: 20,
-    marginBottom: 30
+    padding: 20,
+    margin: 10
   },
-  createtouchable: {
+  createTouchable: {
     borderRadius: 10
   },
-  createbutton: {
+  createButton: {
+    justifyContent: 'center',
     flexDirection: 'row',
     backgroundColor: '#2B47A4',
-    height: 80,
-    width: '90%',
+    padding: 10,
+    borderRadius: 10,
     alignItems: 'center',
-    paddingLeft: 20,
-    borderRadius: 10
+    width: 320,
   },
-  createbuttonicon: {
-    marginRight: 30,
+  createButtonText: {
+    alignSelf: 'center',
+    textAlign: 'center',
+    paddingLeft: 10,
     color: '#C5D9FF',
-  },
-  createbuttontext: {
-    flex: 2,
-    color: '#C5D9FF',
-    fontSize: 36
+    fontSize: 20
   }
 });
 
