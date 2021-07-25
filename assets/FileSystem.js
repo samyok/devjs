@@ -40,6 +40,11 @@ async function fileListing(dir) {
 }
 
 export async function readDir(dir) {
+    try{
+        await RNFS.readDir(root);
+    } catch (e) {
+        await RNFS.mkdir(root);
+    }
     return await fileListing(root + dir);
 }
 
