@@ -1,10 +1,11 @@
-import React from 'react';
-import { ScrollView, Text, View, StyleSheet, TouchableHighlight } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ScrollView, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import {
     ChevronRightIcon as ChevronRightIconOutline,
     PlusCircleIcon as PlusCircleIconOutline
 } from 'react-native-heroicons/outline';
-import LinearGradient from 'react-native-linear-gradient';
+import {readDir} from "../assets/FileSystem";
+
 
 const projectsTemp = [
     {
@@ -41,7 +42,7 @@ const projectsTemp = [
     }
 ];
 
-const Project = ({ project }) => {
+const Project = ({project}) => {
     const openProject = () => {
         // open File directory of Project
     };
@@ -60,26 +61,38 @@ const Project = ({ project }) => {
 };
 
 
-const Projects = ({ projects }) => {
+const Projects = ({projects}) => {
     const newProject = () => {
         // go to new project page
     };
-   return (
-       <View style={styles.background}>
-           <Text style={ styles.title }>
-               Your Projects
-           </Text>
-           <ScrollView>
-               <TouchableHighlight onPress={newProject} underlayColor="black" style={styles.newProjectTouchable}>
-                   <View style={styles.newProjectContainer}>
-                       <PlusCircleIconOutline color='#C5D9FF' size={18} />
-                       <Text style={styles.newProject}>New Project</Text>
-                   </View>
-               </TouchableHighlight>
-               { projectsTemp.map((project) => <Project key={ project.name } project={project}/>)}
-           </ScrollView>
-       </View>
-   );
+    // const [data, setData] = useState({});
+    // useEffect(() => {
+    //     async function readDirectory () {
+    //         let x = readDir('')
+    //         setData(x);
+    //     }
+    //     readDirectory().then(() => console.log('test - read dir'));
+    // }, [])
+
+    return (
+        <View style={styles.background}>
+            <Text style={styles.title}>
+                Your Projects
+            </Text>
+            {/*<Text>*/}
+                {/*{JSON.stringify(data)}*/}
+            {/*</Text>*/}
+            <ScrollView>
+                <TouchableHighlight onPress={newProject} underlayColor="black" style={styles.newProjectTouchable}>
+                    <View style={styles.newProjectContainer}>
+                        <PlusCircleIconOutline color='#C5D9FF' size={18}/>
+                        <Text style={styles.newProject}>New Project</Text>
+                    </View>
+                </TouchableHighlight>
+                {projectsTemp.map((project) => <Project key={project.name} project={project}/>)}
+            </ScrollView>
+        </View>
+    );
 };
 
 const styles = StyleSheet.create({

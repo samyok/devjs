@@ -12,6 +12,18 @@ target 'devjs' do
     :hermes_enabled => false
   )
 
+  pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
+
+  pod 'nodejs-mobile-react-native', :path => '../node_modules/nodejs-mobile-react-native'
+
+  pod 'RNBootSplash', :path => '../node_modules/react-native-bootsplash'
+
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
+
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
+  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+
   target 'devjsTests' do
     inherit! :complete
     # Pods for testing
