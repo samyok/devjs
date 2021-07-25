@@ -24,8 +24,8 @@ export default HelloWorldApp;`;
 
 // const PREVENT_ZOOM = `const meta = document.createElement('meta'); meta.setAttribute('content', 'width=device-width, initial-scale=0.5, maximum-scale=0.5, user-scalable=0'); meta.setAttribute('name', 'viewport'); document.getElementsByTagName('head')[0].appendChild(meta); \``;
 
-const App = () => {
-    const file = 'project_1/test.txt';
+const App = ({navigation}) => {
+    const file = navigation.getParam('filePath');
 
     const [loading, setLoading] = useState(true);
     const [initWebViewParams, setInitWebViewParams] = useState({});
