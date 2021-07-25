@@ -1,26 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, Text} from 'react-native';
+import {
+  SafeAreaView,
+  Text,
+  View,
+  StyleSheet,
+  TouchableHighlight,
+} from 'react-native';
 import {WebView} from 'react-native-webview';
+import {ArrowSmLeftIcon} from 'react-native-heroicons/outline';
 import codemirrorHtml from '../assets/codeScreen/html.js';
 import codeMirrorJs from '../assets/codeScreen/dist/editor.bundle.js';
-import {readFile} from '../assets/FileSystem';
+import {readFile, writeFile} from '../assets/FileSystem';
 
-const DEFAULT_CONTENT = `import React from 'react';
-import { Text, View } from 'react-native';
-
-const HelloWorldApp = () => {
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center"
-      }}>
-      <Text>Hello, world!</Text>
-    </View>
-  )
- }
-export default HelloWorldApp;`;
+const DEFAULT_CONTENT = `console.log('hello world!')`;
 
 // const PREVENT_ZOOM = `const meta = document.createElement('meta'); meta.setAttribute('content', 'width=device-width, initial-scale=0.5, maximum-scale=0.5, user-scalable=0'); meta.setAttribute('name', 'viewport'); document.getElementsByTagName('head')[0].appendChild(meta); \``;
 
@@ -31,14 +23,12 @@ const App = ({navigation}) => {
   const [initWebViewParams, setInitWebViewParams] = useState({});
   useEffect(() => {
     readFile(file).then(({data, meta}) => {
-      console.log(meta);
       setInitWebViewParams({
         initialString: JSON.stringify(data),
-        fileName: JSON.stringify(meta.name),
-        projectName: JSON.stringify(meta.projectName),
+        fileName: meta.name,
+        projectName: meta.projectName,
       });
       setLoading(false);
-      // console.log(initWebViewParams);
     });
   }, []);
 
@@ -46,53 +36,91 @@ const App = ({navigation}) => {
   editor.initializeContent(${
     initWebViewParams.initialString || DEFAULT_CONTENT
   });
-  document.getElementById('filename').innerText = ${
-    initWebViewParams.fileName || 'unknown'
-  };
-  document.getElementById('projectName').innerText = ${
-    initWebViewParams.projectName || 'Unkown'
-  };
   `;
   const initialInjectedJs = `
-      ${codeMirrorJs};
+      ${codeMirrorJs}
       ${initializeContentJs}
-  `;
-  console.log(initialInjectedJs);
-
-  const fetchContentJs = `
-    editor.fetchContent();
   `;
 
   const webview = React.useRef(null);
 
-  useEffect(() => {
-    setTimeout(() => {
-      webview.current.injectJavaScript(fetchContentJs);
-    }, 5000);
-  }, []);
+  const fetchContentJs = `
+    editor.fetchContent();
+  `;
+  function fetchContent() {
+    webview.current.injectJavaScript(fetchContentJs);
+  }
 
   return (
     <SafeAreaView>
       {loading && <Text>Loading...</Text>}
       {!loading && (
-        <WebView
-          ref={webview}
-          originWhitelist={['*']}
-          source={{html: codemirrorHtml}}
-          injectedJavaScript={initialInjectedJs}
-          onMessage={event => {
-            console.log(event.nativeEvent.data);
-          }}
-          containerStyle={{minHeight: '100%', minWidth: '100%'}}
-          onNavigationStateChange={newNavState => {
-            console.log({newNavState});
-
-            webview.current.stopLoading();
-          }}
-        />
+        <>
+          <View style={styles.header}>
+            <TouchableHighlight
+              onPress={() => {
+                navigation.goBack();
+                fetchContent();
+              }}
+              underlayColor="black">
+              <View style={styles.projectGroup}>
+                <ArrowSmLeftIcon color="#FFF" size={18} />
+                <Text style={styles.projectName}>
+                  {initWebViewParams.projectName || 'Unknown'}
+                </Text>
+              </View>
+            </TouchableHighlight>
+            <Text style={styles.filename}>
+              {initWebViewParams.fileName || 'unknown'}
+            </Text>
+          </View>
+          <WebView
+            ref={webview}
+            originWhitelist={['*']}
+            source={{html: codemirrorHtml}}
+            injectedJavaScript={initialInjectedJs}
+            onMessage={event => {
+              console.log('received data:', event.nativeEvent.data);
+              // this is where the editor content is returned
+              // after calling fetchContent()
+              writeFile(file, event.nativeEvent.data).then();
+            }}
+            containerStyle={{minHeight: '100%', minWidth: '100%'}}
+          />
+        </>
       )}
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  header: {
+    top: 0,
+    zIndex: 5,
+    backgroundColor: '#2B47A4',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: 12,
+    paddingBottom: 12,
+    paddingLeft: 24,
+    paddingRight: 24,
+    flexDirection: 'row',
+  },
+  projectGroup: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  projectName: {
+    color: '#FFF',
+    fontSize: 18,
+    fontWeight: '700',
+    marginLeft: 4,
+  },
+  filename: {
+    color: '#FFF',
+    fontSize: 18,
+    fontWeight: '400',
+  },
+});
 
 export default App;

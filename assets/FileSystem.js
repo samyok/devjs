@@ -4,9 +4,16 @@ import * as path from 'react-native-path';
 const root = RNFS.DocumentDirectoryPath + '/project_data/';
 
 export async function writeFile(filePath, content, encoding = 'utf8') {
-    console.log({filePath, content});
-    await RNFS.mkdir(root + path.dirname(filePath));
-    return await RNFS.writeFile(root + filePath, content, encoding);
+    if (filePath.startsWith(root)) {
+        filePath = filePath.replace(root, "");
+    }
+    try {
+        await RNFS.writeFile(root + filePath, content, encoding);
+    } catch (e) {
+        await RNFS.mkdir(root + path.dirname(filePath));
+        await RNFS.writeFile(root + filePath, content, encoding);
+    }
+    return true;
 }
 
 export async function readFile(filePath) {
