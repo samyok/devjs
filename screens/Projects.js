@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import RNBootSplash from "react-native-bootsplash";
-import {SafeAreaView, ScrollView, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import {Dimensions, ScrollView, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import {
     ChevronRightIcon as ChevronRightIconOutline,
     PlusCircleIcon as PlusCircleIconOutline
 } from 'react-native-heroicons/outline';
-import {readDir, writeFile} from "../assets/FileSystem";
-import nodejs from "nodejs-mobile-react-native";
+import {readDir} from "../assets/FileSystem";
+import LinearGradient from "react-native-linear-gradient";
 import dayjs from 'dayjs';
+import WebView from "react-native-webview";
 const relativeTime = require('dayjs/plugin/relativeTime')
 dayjs.extend(relativeTime)
 
@@ -20,7 +20,7 @@ const Project = ({project}) => {
             <View style={styles.project}>
                 <View>
                     <Text style={styles.projectTitle}>{project.data.name}</Text>
-                    <Text style={styles.lastModified}>Last Modified {dayjs(project.data.mtime).fromNow()}</Text>
+                    <Text style={styles.lastModified}>Last modified {dayjs(project.data.mtime).fromNow()}</Text>
                 </View>
                 <ChevronRightIconOutline color='#ADBDF8' size={25}/>
             </View>
@@ -35,19 +35,28 @@ const Projects = () => {
     };
     const [data, setData] = useState([]);
     useEffect(() => {
-        async function readDirectory () {
+        async function readDirectory() {
             // let y = await writeFile('project_2/test.txt', 'testing');
             let x = await readDir('')
             console.log(JSON.stringify(x, null, 4));
             setData(x);
         }
+
         readDirectory().then(() => console.log('test - read dir'));
     }, [])
 
     return (
-        <View style={styles.background}>
+        <LinearGradient start={{x: 1, y: 0}} end={{x: 0, y:1}} colors={['#6783E6','#7b94fc', '#a9bdfc', '#ADBDF8']} style={styles.background}>
+            <ScrollView style={styles.background}>
+                <WebView style={{
+                    backgroundColor: 'transparent',
+                    height: Dimensions.get('window').height,
+                    width: Dimensions.get('window').width,
+                    // position: 'absolute',
+                    // top: 0,
+                    // left: 0
+                }} source={{uri: 'https://cdn.samyok.us/particles.html'}} />
 
-            <ScrollView>
                 <Text style={styles.title}>
                     Your Projects
                 </Text>
@@ -57,17 +66,29 @@ const Projects = () => {
                         <Text style={styles.newProject}>New Project</Text>
                     </View>
                 </TouchableHighlight>
-                {data.filter(p => p.isDir).map((project, index) => <Project key={JSON.stringify({index, project})} project={project}/>)}
+                {data.filter(p => p.isDir).map((project, index) => <Project key={JSON.stringify({index, project})}
+                                                                            project={project}/>)}
+                <WebView style={{
+                    backgroundColor: 'red',
+                    height: Dimensions.get('window').height,
+                    width: Dimensions.get('window').width,
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                }} source={{uri: 'https://cdn.samyok.us/particles.html'}} />
+
             </ScrollView>
-        </View>
+        </LinearGradient>
+
     );
 };
 
 const styles = StyleSheet.create({
     background: {
-        flex: 1,
-        backgroundColor: '#6783E6',
+        flex: 0,
+        backgroundColor: 'transparent',
         fontFamily: 'Inter',
+        minHeight: Dimensions.get("window").height,
     },
     title: {
         color: 'white',
@@ -76,6 +97,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         top: 39,
         margin: 10,
+        marginTop: -1*Dimensions.get('window').height+10,
         paddingBottom: 50,
     },
     newProjectTouchable: {

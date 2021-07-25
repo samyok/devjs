@@ -15,7 +15,7 @@ import {StyleSheet, Text, useColorScheme, View} from "react-native";
 
 import {Colors,} from "react-native/Libraries/NewAppScreen";
 
-import Projects from './screens/code';
+import Projects from './screens/Projects';
 
 
 const Section = ({children, title}): Node => {
