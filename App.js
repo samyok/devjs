@@ -15,6 +15,9 @@ import {SafeAreaView, StyleSheet, Text, useColorScheme, View} from "react-native
 
 import {Colors,} from "react-native/Libraries/NewAppScreen";
 
+import Projects from './screens/Projects';
+
+
 const Section = ({children, title}): Node => {
     const isDarkMode = useColorScheme() === "dark";
 
@@ -63,9 +66,7 @@ const App: () => Node = () => {
         );
     }, []);
     return (
-        <SafeAreaView style={backgroundStyle}>
-            <Text style={{backgroundColor: 'cyan', padding: 20, fontSize: 30}}>Test!</Text>
-        </SafeAreaView>
+        <Projects/>
     );
 };
 

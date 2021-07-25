@@ -1,23 +1,23 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, Pressable, 
-TouchableHighlight } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableHighlight } from 'react-native';
 import { XCircleIcon, PlusCircleIcon } from 'react-native-heroicons/solid';
 
 const NewProject = () => {
-  const createFile = () => {
 
-  }
+  const createProject = () => {
+    // create new project
+  };
   
   return (
     <View style={styles.background}>
       <View style={styles.header}>
         <Text style={styles.heading}>New Project</Text>
-        <Pressable>
+        <TouchableHighlight style={styles.closetouchable} underlayColor="#6783E6" onPress={() => {}}>
           <XCircleIcon style={styles.closebutton} color='#C5D9FF' size={42}/>
-        </Pressable>
+        </TouchableHighlight>
       </View>
       <TextInput style={styles.textbox} defaultValue='Project Name'></TextInput>
-      <TouchableHighlight underlayColor="#0D1E51" onPress={createFile}>
+      <TouchableHighlight style={styles.createtouchable} underlayColor="#0D1E51" onPress={createProject}>
         <View style={styles.createbutton}>
           <PlusCircleIcon style={styles.createbuttonicon} color='#C5D9FF' size={42}></PlusCircleIcon>
           <Text style={styles.createbuttontext}>Create Project</Text>
@@ -49,6 +49,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#fff'
   },
+  closetouchable: {
+    borderRadius: 10
+  },
   closebutton: {
     flex: 1,
     color: '#C5D9FF'
@@ -61,6 +64,9 @@ const styles = StyleSheet.create({
     width: '90%',
     paddingLeft: 20,
     marginBottom: 30
+  },
+  createtouchable: {
+    borderRadius: 10
   },
   createbutton: {
     flexDirection: 'row',
