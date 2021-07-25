@@ -1,16 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Platform, StyleSheet, Text, TextInput, TouchableHighlight, View} from 'react-native';
 import {PlusCircleIcon as PlusCircleIconOutline} from 'react-native-heroicons/outline';
-import RNBootSplash from "react-native-bootsplash";
 import {writeFile} from "../assets/FileSystem";
+import GSPView from "../assets/GradientParticleScrollView";
 
 const NewFile = ({navigation}) => {
-    useEffect(() => {
-        setTimeout(() => {
-            RNBootSplash.hide({fade: true});
-        }, 1500);
-
-    }, []);
 
     const [newFileName, setNewFileName] = useState('');
     const createProject = () => {
@@ -23,31 +17,32 @@ const NewFile = ({navigation}) => {
 
 
     return (
-        <View style={styles.background}>
-            <Text style={styles.heading}>New File</Text>
-            <TextInput style={styles.textbox}
-                       placeholder={'File Name'}
-                       placeholderTextColor={'#C5D9FF80'}
-                       value={newFileName}
-                       onChangeText={ev => {
-                           setNewFileName(ev);
-                       }}
-            />
-            <TouchableHighlight style={styles.createTouchable} underlayColor="#0D1E51"
-                                onPress={createProject.bind(this)}>
-                <View style={styles.createButton}>
-                    <PlusCircleIconOutline color='#C5D9FF' size={30}/>
-                    <Text style={styles.createButtonText}>Create File</Text>
-                </View>
-            </TouchableHighlight>
-        </View>
+        <GSPView>
+            <View style={styles.background}>
+                <Text style={styles.heading}>New File</Text>
+                <TextInput style={styles.textbox}
+                           placeholder={'File Name'}
+                           placeholderTextColor={'#C5D9FF80'}
+                           value={newFileName}
+                           onChangeText={ev => {
+                               setNewFileName(ev);
+                           }}
+                />
+                <TouchableHighlight style={styles.newProjectTouchable} underlayColor="#0D1E51"
+                                    onPress={createProject.bind(this)}>
+                    <View style={styles.newProjectContainer}>
+                        <PlusCircleIconOutline  color='#C5D9FF' size={18}/>
+                        <Text style={styles.newProject}>Create Project</Text>
+                    </View>
+                </TouchableHighlight>
+            </View>
+        </GSPView>
     );
 };
 
 const styles = StyleSheet.create({
     background: {
         flex: 1,
-        backgroundColor: '#6783E6',
         alignItems: 'center'
     },
     heading: {
@@ -86,7 +81,28 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         color: '#C5D9FF',
         fontSize: 20
-    }
+    },
+
+    newProjectTouchable: {
+        alignSelf: 'center',
+        borderRadius: 9,
+        width: 335,
+        marginVertical: 6,
+    },
+    newProjectContainer: {
+        flexDirection: 'row',
+        backgroundColor: '#4D6BD6',
+        padding: 12,
+        borderRadius: 9,
+        justifyContent: 'center',
+    },
+    newProject: {
+        alignSelf: 'center',
+        textAlign: 'center',
+        fontSize: 14,
+        color: 'white',
+        marginLeft: 10,
+    },
 });
 
 export default NewFile;

@@ -11,7 +11,7 @@ import {readDir} from "../assets/FileSystem";
 
 const File = ({file, margin, navigation}) => {
     const [isOpen, setIsOpen] = useState(false);
-
+    console.log(file);
     const openFile = () => {
         // open folder dropdown
         if (file.isDir) {
@@ -19,13 +19,13 @@ const File = ({file, margin, navigation}) => {
             setIsOpen(newIsOpen);
         } else {
             // open editor panel
-            navigation.navigate('Editor');
+            navigation.navigate('Editor', {filePath: file.data.path});
         }
     };
 
     return (
         <View>
-            <TouchableHighlight onPress={openFile} underlayColor="black"
+            <TouchableHighlight onPress={openFile.bind(this)} underlayColor="black"
                                 style={[styles.touchable, {marginLeft: margin}]}>
                 <View style={styles.file}>
                     <View>
@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
         top: 19,
         margin: 10,
         marginTop: 30,
+        marginBottom: 45,
         paddingHorizontal: 6,
     },
     filesContainer: {

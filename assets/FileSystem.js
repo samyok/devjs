@@ -10,6 +10,9 @@ export async function writeFile(filePath, content, encoding = 'utf8') {
 }
 
 export async function readFile(filePath) {
+    if(filePath.startsWith(root)){
+        filePath = filePath.replace(root, "");
+    }
     return {
         data: await RNFS.readFile(root + filePath),
         meta: {
