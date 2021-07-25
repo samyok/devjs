@@ -32,11 +32,8 @@ const Project = ({ project, navigation }) => {
 
 
 const Projects = ({ navigation }) => {
-    const [data, setData] = useState(projectsTemp);
+    // const [data, setData] = useState(projectsTemp);
 
-    const newProject = () => {
-        // go to new project page
-    };
     const [data, setData] = useState([]);
     useEffect(() => {
         async function readDirectory() {
