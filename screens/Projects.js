@@ -7,6 +7,7 @@ import {
 import {readDir} from "../assets/FileSystem";
 import nodejs from "nodejs-mobile-react-native";
 import LinearGradient from "react-native-linear-gradient";
+import RNBootSplash from "react-native-bootsplash";
 import dayjs from 'dayjs';
 import WebView from "react-native-webview";
 const relativeTime = require('dayjs/plugin/relativeTime')
@@ -15,7 +16,7 @@ dayjs.extend(relativeTime)
 const Project = ({ project, navigation }) => {
     // open File directory of Project
     const openProject = () => {
-        navigation.push('Files', { files: project.children, name: project.data.name });
+        navigation.push('Files', { files: project.path });
     };
     return (
         <TouchableHighlight onPress={openProject} underlayColor="black" style={styles.projectTouchable}>
