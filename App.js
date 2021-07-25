@@ -6,30 +6,41 @@
  * @flow strict-local
  */
 
-import React, {useEffect} from "react";
+import React from "react";
 
-import RNBootSplash from "react-native-bootsplash";
-
-import {StyleSheet, Text, useColorScheme, View} from "react-native";
-
-import {Colors,} from "react-native/Libraries/NewAppScreen";
-
+// import components
 import Projects from './screens/Projects';
 import Files from './screens/Files';
 import NewProject from './screens/NewProject';
 import NewFile from './screens/NewFile';
+import Editor from './screens/code';
 
-// import { NavigationContainer } from '@react-navigation/native';
-// import { createStackNavigator } from '@react-navigation/stack';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
-// import type {Node} from "react";
-// import nodejs from 'nodejs-mobile-react-native';
-// import RNBootSplash from "react-native-bootsplash";
+const AppNavigator = createStackNavigator(
+    {
+        Projects: Projects,
+        NewProject: NewProject,
+        NewFile: NewFile,
+        Files: Files,
+        Editor: Editor
+    },
+    {
+        initialRouteName: 'Projects',
+        defaultNavigationOptions: {
+            headerShown: false,
+        },
+    }
+);
 
-// create a stack navigator
-// const Stack = createStackNavigator();
+const AppContainer = createAppContainer(AppNavigator);
+const App = () => {
+    return <AppContainer />;
+}
+export default App;
+
+// import nodejs from 'nodejs-mobile-react-native';
 
 // const App = () => {
 //     useEffect(() => {
@@ -53,30 +64,3 @@ import { createStackNavigator } from 'react-navigation-stack';
 //         </NavigationContainer>
 //     );
 // };
-
-const AppNavigator = createStackNavigator(
-    {
-        Projects: Projects,
-        NewProject: NewProject,
-        NewFile: NewFile,
-        Files: Files,
-        // Editor:
-    },
-    {
-        initialRouteName: 'Projects',
-    }
-);
-
-const AppContainer = createAppContainer(AppNavigator);
-
-const App = () => {
-    return <AppContainer />;
-}
-
-// export default class App extends React.Component {
-//     render() {
-//         return <AppContainer />;
-//     }
-// }
-
-export default App;

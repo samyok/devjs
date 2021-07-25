@@ -4,11 +4,15 @@ import {
     ChevronRightIcon as ChevronRightIconOutline,
     PlusCircleIcon as PlusCircleIconOutline
 } from 'react-native-heroicons/outline';
+
 import {readDir} from "../assets/FileSystem";
 import nodejs from "nodejs-mobile-react-native";
+
+import RNBootSplash from "react-native-bootsplash";
 import LinearGradient from "react-native-linear-gradient";
-import dayjs from 'dayjs';
 import WebView from "react-native-webview";
+
+import dayjs from 'dayjs';
 const relativeTime = require('dayjs/plugin/relativeTime')
 dayjs.extend(relativeTime)
 
@@ -32,28 +36,77 @@ const Project = ({ project, navigation }) => {
 
 
 const Projects = ({ navigation }) => {
-    const [data, setData] = useState(projectsTemp);
-
-    const newProject = () => {
-        // go to new project page
-    };
-    const [data, setData] = useState([]);
-    useEffect(() => {
-        async function readDirectory() {
-            // let y = await writeFile('project_2/test.txt', 'testing');
-            let x = await readDir('')
-            console.log(JSON.stringify(x, null, 4));
-            setData(x);
+    const [data, setData] = useState([
+        {
+            "isDir": false,
+            "data": {
+                "ctime": null,
+                "mtime": "2021-07-25T01:43:37.000Z",
+                "name": "test.txt",
+                "path": "/data/user/0/com.devjs/files/project_data/test.txt",
+                "size": 7
+            }
+        },
+        {
+            "isDir": true,
+            "data": {
+                "ctime": null,
+                "mtime": "2021-07-25T01:43:52.000Z",
+                "name": "project_1",
+                "path": "/data/user/0/com.devjs/files/project_data/project_1",
+                "size": 4096
+            },
+            "children": [
+                {
+                    "isDir": false,
+                    "data": {
+                        "ctime": null,
+                        "mtime": "2021-07-25T01:43:52.000Z",
+                        "name": "test.txt",
+                        "path": "/data/user/0/com.devjs/files/project_data/project_1/test.txt",
+                        "size": 7
+                    }
+                }
+            ]
+        },
+        {
+            "isDir": true,
+            "data": {
+                "ctime": null,
+                "mtime": "2021-07-25T01:44:15.000Z",
+                "name": "project_2",
+                "path": "/data/user/0/com.devjs/files/project_data/project_2",
+                "size": 4096
+            },
+            "children": [
+                {
+                    "isDir": false,
+                    "data": {
+                        "ctime": null,
+                        "mtime": "2021-07-25T01:52:05.000Z",
+                        "name": "test.txt",
+                        "path": "/data/user/0/com.devjs/files/project_data/project_2/test.txt",
+                        "size": 7
+                    }
+                }
+            ]
         }
-
-        readDirectory().then(() => console.log('test - read dir'));
-    }, [])
+    ]);
+    // useEffect(() => {
+    //     async function readDirectory() {
+    //         // let y = await writeFile('project_2/test.txt', 'testing');
+    //         let x = await readDir('')
+    //         console.log(JSON.stringify(x, null, 4));
+    //         setData(x);
+    //     }
+    //
+    //     readDirectory().then(() => console.log('test - read dir'));
+    // }, [])
 
     useEffect(() => {
         setTimeout(() => {
             RNBootSplash.hide({fade: true});
         }, 1500);
-
     }, []);
 
     // navigate to creating a new project
@@ -83,7 +136,7 @@ const Projects = ({ navigation }) => {
                     </View>
                 </TouchableHighlight>
                 {data.filter(p => p.isDir).map((project, index) => <Project key={JSON.stringify({index, project})}
-                                                                            project={project}/>)}
+                                                                            project={project} navigation={navigation}/>)}
                 <WebView style={{
                     backgroundColor: 'red',
                     height: Dimensions.get('window').height,
@@ -94,7 +147,6 @@ const Projects = ({ navigation }) => {
                 }} source={{uri: 'https://cdn.samyok.us/particles.html'}} />
             </ScrollView>
         </LinearGradient>
-
     );
 };
 
