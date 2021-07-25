@@ -5,53 +5,37 @@
  * @format
  * @flow strict-local
  */
-import nodejs from 'nodejs-mobile-react-native';
+import 'react-native-gesture-handler';
 
-import type {Node} from "react";
+// import type {Node} from "react";
 import React, {useEffect} from "react";
-import RNBootSplash from "react-native-bootsplash";
-
-import {SafeAreaView, StyleSheet, Text, useColorScheme, View} from "react-native";
-
-import {Colors,} from "react-native/Libraries/NewAppScreen";
-
+import {Text, View} from 'react-native';
 import Projects from './screens/Projects';
 
+import RNBootSplash from "react-native-bootsplash";
+import nodejs from 'nodejs-mobile-react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-const Section = ({children, title}): Node => {
-    const isDarkMode = useColorScheme() === "dark";
 
+function HomeScreen() {
+    useEffect(() => {
+        setTimeout(() => {
+            RNBootSplash.hide({fade: true});
+        }, 1500);
+
+    }, []);
 
     return (
-        <View style={styles.sectionContainer}>
-            <Text
-                style={[
-                    styles.sectionTitle,
-                    {
-                        color: isDarkMode ? Colors.white : Colors.black,
-                    },
-                ]}>
-                {title}
-            </Text>
-            <Text
-                style={[
-                    styles.sectionDescription,
-                    {
-                        color: isDarkMode ? Colors.light : Colors.dark,
-                    },
-                ]}>
-                {children}
-            </Text>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <Text>Home Screen</Text>
         </View>
     );
-};
+}
 
-const App: () => Node = () => {
-    const isDarkMode = useColorScheme() === "dark";
+const Stack = createStackNavigator();
 
-    const backgroundStyle = {
-        backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    };
+const App = () => {
     useEffect(() => {
         setTimeout(() => {
             RNBootSplash.hide({fade: true});
@@ -66,27 +50,12 @@ const App: () => Node = () => {
         );
     }, []);
     return (
-        <Projects/>
+        <NavigationContainer>
+            {/*<Projects/>*/}
+            <Stack.Navigator>
+                <Stack.Screen name="Home" component={HomeScreen} />
+            </Stack.Navigator>
+        </NavigationContainer>
     );
 };
-
-const styles = StyleSheet.create({
-    sectionContainer: {
-        marginTop: 32,
-        paddingHorizontal: 24,
-    },
-    sectionTitle: {
-        fontSize: 24,
-        fontWeight: "600",
-    },
-    sectionDescription: {
-        marginTop: 8,
-        fontSize: 18,
-        fontWeight: "400",
-    },
-    highlight: {
-        fontWeight: "700",
-    },
-});
-
 export default App;
