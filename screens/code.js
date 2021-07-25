@@ -53,7 +53,13 @@ const App = ({navigation}) => {
 
   return (
     <SafeAreaView>
-      {loading && <Text>Loading...</Text>}
+      {loading && (
+        <>
+          <View style={styles.loadingBg}>
+            <Text style={styles.loadingText}>Loading...</Text>
+          </View>
+        </>
+      )}
       {!loading && (
         <>
           <View style={styles.header}>
@@ -120,6 +126,18 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontSize: 18,
     fontWeight: '400',
+  },
+  loadingBg: {
+    backgroundColor: '#282c34',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+  },
+  loadingText: {
+    color: '#FFF',
+    fontSize: 32,
+    fontWeight: '700',
   },
 });
 
