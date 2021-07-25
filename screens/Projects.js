@@ -8,53 +8,122 @@ import {
 import {readDir} from "../assets/FileSystem";
 import nodejs from "nodejs-mobile-react-native";
 
+import dayjs from 'dayjs';
+const relativeTime = require('dayjs/plugin/relativeTime');
+dayjs.extend(relativeTime);
+
 
 const projectsTemp = [
     {
-        name: "Project 1",
-        date: new Date(),
+        "isDir": false,
+        "data": {
+            "ctime": null,
+            "mtime": "2021-07-25T01:43:37.000Z",
+            "name": "test.txt",
+            "path": "/data/user/0/com.devjs/files/project_data/test.txt",
+            "size": 7
+        }
     },
     {
-        name: 'Project 2',
-        date: new Date(),
+        "isDir": true,
+        "data": {
+            "ctime": null,
+            "mtime": "2021-07-25T01:43:52.000Z",
+            "name": "project_1",
+            "path": "/data/user/0/com.devjs/files/project_data/project_1",
+            "size": 4096
+        },
+        "children": [
+            {
+                "isDir": false,
+                "data": {
+                    "ctime": null,
+                    "mtime": "2021-07-25T01:43:52.000Z",
+                    "name": "test.txt",
+                    "path": "/data/user/0/com.devjs/files/project_data/project_1/test.txt",
+                    "size": 7
+                }
+            }
+        ]
     },
     {
-        name: 'Project 3',
-        date: new Date(),
-    },
-    {
-        name: 'Project 4',
-        date: new Date(),
-    },
-    {
-        name: 'Project 5',
-        date: new Date(),
-    },
-    {
-        name: 'Project 6',
-        date: new Date(),
-    },
-    {
-        name: 'Project 7',
-        date: new Date(),
-    },
-    {
-        name: 'Project 8',
-        date: new Date(),
+        "isDir": true,
+        "data": {
+            "ctime": null,
+            "mtime": "2021-07-25T01:44:15.000Z",
+            "name": "project_2",
+            "path": "/data/user/0/com.devjs/files/project_data/project_2",
+            "size": 4096
+        },
+        "children": [
+            {
+                "isDir": false,
+                "data": {
+                    "ctime": null,
+                    "mtime": "2021-07-25T01:52:05.000Z",
+                    "name": "test.txt",
+                    "path": "/data/user/0/com.devjs/files/project_data/project_2/test.txt",
+                    "size": 7
+                }
+            },
+            {
+                "isDir": false,
+                "data": {
+                    "ctime": null,
+                    "mtime": "2021-07-25T03:52:05.000Z",
+                    "name": "test2.txt",
+                    "path": "/data/user/0/com.devjs/files/project_data/project_2/test2.txt",
+                    "size": 7
+                }
+            },
+            {
+                "isDir": true,
+                "data": {
+                    "ctime": null,
+                    "mtime": "2021-07-25T01:44:15.000Z",
+                    "name": "project_2_subfolder",
+                    "path": "/data/user/0/com.devjs/files/project_data/project_2",
+                    "size": 4096
+                },
+                "children": [
+                    {
+                        "isDir": false,
+                        "data": {
+                            "ctime": null,
+                            "mtime": "2021-07-25T01:52:05.000Z",
+                            "name": "subtest.txt",
+                            "path": "/data/user/0/com.devjs/files/project_data/project_2/project_2_subfolder/subtest.txt",
+                            "size": 7
+                        }
+                    },
+                    {
+                        "isDir": false,
+                        "data": {
+                            "ctime": null,
+                            "mtime": "2021-07-25T03:52:05.000Z",
+                            "name": "subtest2.txt",
+                            "path": "/data/user/0/com.devjs/files/project_data/project_2/project_2_subfolder/subtest2.txt",
+                            "size": 7
+                        }
+                    }
+                ]
+            }
+        ]
     }
 ];
 
-const Project = ({project}) => {
+const Project = ({ project, navigation }) => {
+    // open File directory of Project
     const openProject = () => {
-        // open File directory of Project
+        navigation.push('Files', { files: project.children, name: project.data.name });
     };
 
     return (
         <TouchableHighlight onPress={openProject} underlayColor="black" style={styles.projectTouchable}>
             <View style={styles.project}>
                 <View>
-                    <Text style={styles.projectTitle}>{project.name}</Text>
-                    <Text style={styles.lastModified}>Last Modified [input date calculations here]</Text>
+                    <Text style={styles.projectTitle}>{project.data.name}</Text>
+                    <Text style={styles.lastModified}>Last Modified {dayjs(project.data.mtime).fromNow()}</Text>
                 </View>
                 <ChevronRightIconOutline color='#ADBDF8' size={25}/>
             </View>
@@ -63,7 +132,17 @@ const Project = ({project}) => {
 };
 
 
-const Projects = ({ projects, navigation }) => {
+const Projects = ({ navigation }) => {
+    const [data, setData] = useState(projectsTemp);
+
+    // useEffect(() => {
+    //     async function readDirectory () {
+    //         let x = readDir('')
+    //         setData(x);
+    //     }
+    //     readDirectory().then(() => console.log('test - read dir'));
+    // }, [])
+
     useEffect(() => {
         setTimeout(() => {
             RNBootSplash.hide({fade: true});
@@ -75,15 +154,6 @@ const Projects = ({ projects, navigation }) => {
     const newProject = () => {
         navigation.push('NewProject');
     };
-
-    // const [data, setData] = useState({});
-    // useEffect(() => {
-    //     async function readDirectory () {
-    //         let x = readDir('')
-    //         setData(x);
-    //     }
-    //     readDirectory().then(() => console.log('test - read dir'));
-    // }, [])
 
     return (
         <View style={styles.background}>
@@ -100,7 +170,7 @@ const Projects = ({ projects, navigation }) => {
                         <Text style={styles.newProject}>New Project</Text>
                     </View>
                 </TouchableHighlight>
-                {projectsTemp.map((project) => <Project key={project.name} project={project}/>)}
+                {data.filter(file => file.isDir).map((project) => <Project key={project.data.name} project={project} navigation={navigation}/>)}
             </ScrollView>
         </View>
     );

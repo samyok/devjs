@@ -1,57 +1,11 @@
 import React, { useState } from 'react';
+import dayjs from "dayjs";
 import { ScrollView, Text, View, StyleSheet, TouchableHighlight } from 'react-native';
 import {
     ChevronRightIcon as ChevronRightIconOutline,
     ChevronDownIcon as ChevronDownIconOutline,
     PlusCircleIcon as PlusCircleIconOutline
 } from 'react-native-heroicons/outline';
-
-const filesTemp = [
-    {
-        name: 'File 1',
-        isFolder: false,
-        size: '30 MB',
-    },
-    {
-        name: 'File 2',
-        isFolder: false,
-        size: '30 MB',
-    },
-    {
-        name: 'Folder 1',
-        isFolder: true,
-        size: '30 MB',
-        files: [
-            {
-                name: 'File 1 Inside Folder 1',
-                isFolder: false,
-                size: '30 MB',
-            },
-            {
-                name: 'File 2 Inside Folder 1',
-                isFolder: false,
-                size: '30 MB',
-            },
-            {
-                name: 'Folder 2 Inside Folder 1',
-                isFolder: true,
-                size: '30 MB',
-                files: [
-                    {
-                        name: 'File 3 Inside Folder 2',
-                        isFolder: false,
-                        size: '30 MB',
-                    }
-                ],
-            },
-        ]
-    },
-    {
-        name: 'File 3',
-        isFolder: false,
-        size: '30 MB',
-    }
-];
 
 const File = ({ file, margin }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -66,31 +20,38 @@ const File = ({ file, margin }) => {
             <TouchableHighlight onPress={openFile} underlayColor="black" style={[styles.touchable, { marginLeft: margin }]}>
                 <View style={styles.file} onPress={openFile}>
                     <View>
-                        <Text style={styles.fileTitle}>{file.name}{file.isFolder ? '/' : ''}</Text>
-                        <Text style={styles.fileSize}>{file.size}</Text>
+                        <Text style={styles.fileTitle}>
+                            {file.data.name}{file.isDir ? '/' : ''}
+                            <Text style={styles.fileSize}>   {file.data.size} B</Text>
+                        </Text>
+                        <Text style={styles.lastModified}>Last Modified {dayjs(file.data.mtime).fromNow()}</Text>
                     </View>
-                    {file.isFolder ? ( isOpen ?
+                    {file.isDir ? ( isOpen ?
                         <ChevronDownIconOutline color='#ADBDF8' size={25}/> : <ChevronRightIconOutline color='#ADBDF8' size={25}/>
                     ) : <></>}
                 </View>
             </TouchableHighlight>
             <ScrollView>
-                { file.isFolder ? ( isOpen ?
-                    file.files.map((subFile) => <File key={ subFile.name } file={subFile} margin={margin + 20}/>) : <></>
+                { file.isDir ? ( isOpen ?
+                    file.children.map((subFile) => <File key={ subFile.data.name } file={subFile} margin={margin + 20}/>) : <></>
                 ) : <></> }
             </ScrollView>
         </View>
     );
 };
 
-const Files = ({ files }) => {
+const Files = ({ navigation }) => {
+    // go to new file page
     const newFile = () => {
-        // go to new file page
+        navigation.push('NewFile');
     };
+
+    const files = navigation.getParam('files', []);
+
     return (
         <View style={styles.background}>
             <Text style={ styles.title }>
-                Your Files
+                { navigation.getParam('name', 'Project Files') }
             </Text>
             <ScrollView style={styles.filesContainer}>
                 <TouchableHighlight onPress={newFile} underlayColor="black" style={styles.newFileTouchable}>
@@ -99,7 +60,7 @@ const Files = ({ files }) => {
                         <Text style={styles.newFile}>New File</Text>
                     </View>
                 </TouchableHighlight>
-                { filesTemp.map((file) => <File key={ file.name } file={file} margin={10}/>)}
+                { files.map((file) => <File key={ file.data.name } file={file} margin={10}/>)}
             </ScrollView>
         </View>
     );
@@ -160,6 +121,12 @@ const styles = StyleSheet.create({
         color: 'white',
     },
     fileSize: {
+        fontSize: 12,
+        color: '#4D6BD6',
+        opacity: 0.5,
+        paddingLeft: 5,
+    },
+    lastModified: {
         fontSize: 12,
         color: 'white',
         opacity: 0.5,
