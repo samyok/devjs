@@ -4,7 +4,8 @@ import {WebView} from 'react-native-webview';
 import {ArrowSmLeftIcon} from 'react-native-heroicons/outline';
 import codemirrorHtml from '../assets/codeScreen/html.js';
 import codeMirrorJs from '../assets/codeScreen/dist/editor.bundle.js';
-import {readFile, writeFile} from '../assets/FileSystem';
+import {copyRecursive, readFile, writeFile} from '../assets/FileSystem';
+import nodejs from "nodejs-mobile-react-native";
 
 const DEFAULT_CONTENT = `console.log('hello world!')`;
 
@@ -25,6 +26,35 @@ const App = ({navigation}) => {
             setLoading(false);
         });
     }, []);
+
+    const [nodeDir, setNodeDir] = useState('');
+
+    useEffect(() => {
+        nodejs.start("__devjs__mobile__node__compiled.js");
+        nodejs.channel.addListener(
+            "message",
+            (msg) => {
+                console.log("From node: " + msg);
+            }
+        );
+        console.log(file);
+        nodejs.channel.post('dir', file);
+        nodejs.channel.addListener('dir', dir => {
+            console.log({dir});
+            setNodeDir(dir)
+        });
+    }, [])
+
+
+    function runThisScript() {
+        // copy and paste all files to `nodeDir`
+        console.log(initWebViewParams.projectName, nodeDir);
+        console.log(JSON.parse(initWebViewParams.initialString));
+        copyRecursive(initWebViewParams.projectName, nodeDir).then(() => {
+            nodejs.channel.post("script", JSON.parse(initWebViewParams.initialString));
+            console.log('sending script');
+        })
+    }
 
     const initializeContentJs = `
   editor.initializeContent(${
