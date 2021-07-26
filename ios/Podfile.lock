@@ -255,10 +255,44 @@ PODS:
     - React-jsi (= 0.63.0)
   - RNBootSplash (3.2.4):
     - React-Core
+  - RNCMaskedView (0.1.11):
+    - React
   - RNFS (2.18.0):
     - React
   - RNGestureHandler (1.10.3):
     - React-Core
+  - RNReanimated (2.2.0):
+    - DoubleConversion
+    - FBLazyVector
+    - FBReactNativeSpec
+    - Folly
+    - glog
+    - RCTRequired
+    - RCTTypeSafety
+    - React
+    - React-callinvoker
+    - React-Core
+    - React-Core/DevSupport
+    - React-Core/RCTWebSocket
+    - React-CoreModules
+    - React-cxxreact
+    - React-jsi
+    - React-jsiexecutor
+    - React-jsinspector
+    - React-RCTActionSheet
+    - React-RCTAnimation
+    - React-RCTBlob
+    - React-RCTImage
+    - React-RCTLinking
+    - React-RCTNetwork
+    - React-RCTSettings
+    - React-RCTText
+    - React-RCTVibration
+    - ReactCommon/turbomodule/core
+    - Yoga
+  - RNScreens (3.4.0):
+    - React-Core
+    - React-RCTImage
   - RNSVG (12.1.1):
     - React
   - Yoga (1.14.0)
@@ -296,8 +330,11 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
+  - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNReanimated (from `../node_modules/react-native-reanimated`)
+  - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -366,10 +403,16 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNBootSplash:
     :path: "../node_modules/react-native-bootsplash"
+  RNCMaskedView:
+    :path: "../node_modules/@react-native-community/masked-view"
   RNFS:
     :path: "../node_modules/react-native-fs"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNReanimated:
+    :path: "../node_modules/react-native-reanimated"
+  RNScreens:
+    :path: "../node_modules/react-native-screens"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   Yoga:
@@ -378,11 +421,11 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
-  DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
+  DoubleConversion: cde416483dac037923206447da6e1454df403714
   FBLazyVector: 6f1045c66f816849b33c4ff28930b611e89059a0
   FBReactNativeSpec: e856d5103d749483f86f53afafd8df4ed8a776bd
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
-  glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
+  glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
   nodejs-mobile-react-native: 27a5dd06d934c919777aa5f66144f75bdf15f260
   RCTRequired: e46bb77db03887b3e200d34b08515c804669db99
   RCTTypeSafety: 270fed6675c42f80fb87b47d626ef3cede1505e6
@@ -407,8 +450,11 @@ SPEC CHECKSUMS:
   React-RCTVibration: 77ab1cf4a5eb854b88ad5ed3e9d8509ed124525e
   ReactCommon: f63556ee9e41e9802257228237e5e660451a03cf
   RNBootSplash: 4844706cbb56a3270556c9b94e59dedadccd47e4
+  RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNFS: 3ab21fa6c56d65566d1fb26c2228e2b6132e5e32
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
+  RNReanimated: d9da990fc90123f4ffbfdda93d00fc15174863a8
+  RNScreens: 21b73c94c9117e1110a79ee0ee80c93ccefed8ce
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   Yoga: 7d2edc5b410474191962e6dee88ee67f9b328b6b
 

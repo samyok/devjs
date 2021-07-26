@@ -15,8 +15,8 @@ import NewProject from './screens/NewProject';
 import NewFile from './screens/NewFile';
 import Editor from './screens/code';
 
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+import {createAppContainer} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
 
 const AppNavigator = createStackNavigator(
     {
@@ -36,31 +36,7 @@ const AppNavigator = createStackNavigator(
 
 const AppContainer = createAppContainer(AppNavigator);
 const App = () => {
-    return <AppContainer />;
+    return <AppContainer/>;
 }
 export default App;
 
-// import nodejs from 'nodejs-mobile-react-native';
-
-// const App = () => {
-//     useEffect(() => {
-//         setTimeout(() => {
-//             RNBootSplash.hide({fade: true});
-//         }, 1500);
-//
-//         nodejs.start("main.js");
-//         nodejs.channel.addListener(
-//             "message",
-//             (msg) => {
-//                 alert("From node: " + msg);
-//             }
-//         );
-//     }, []);
-//     return (
-//         <NavigationContainer>
-//             <Stack.Navigator initialRouteName={'ProjectsScreen'}>
-//                 <Stack.Screen name='ProjectsScreen' component={Projects} />
-//             </Stack.Navigator>
-//         </NavigationContainer>
-//     );
-// };

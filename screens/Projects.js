@@ -10,6 +10,7 @@ import {readDir} from "../assets/FileSystem";
 import RNBootSplash from "react-native-bootsplash";
 import GSPView from "../assets/GradientParticleScrollView";
 import dayjs from 'dayjs';
+import nodejs from "nodejs-mobile-react-native";
 
 const relativeTime = require('dayjs/plugin/relativeTime')
 dayjs.extend(relativeTime)
@@ -36,16 +37,7 @@ const Project = ({project, navigation}) => {
 
 const Projects = ({navigation}) => {
     const [data, setData] = useState([]);
-    // useEffect(() => {
-    //     async function readDirectory() {
-    //         // let y = await writeFile('project_2/test.txt', 'testing');
-    //         let x = await readDir('')
-    //         console.log(JSON.stringify(x, null, 4));
-    //         setData(x);
-    //     }
-    //
-    //     readDirectory().then(() => console.log('test - read dir'));
-    // }, [])
+
 
     useEffect(() => {
         (async () => {
@@ -88,7 +80,7 @@ const styles = StyleSheet.create({
     background: {
         flex: 0,
         backgroundColor: 'transparent',
-        fontFamily: 'Inter',
+        // fontFamily: 'Inter',
         minHeight: Dimensions.get("window").height,
     },
     title: {

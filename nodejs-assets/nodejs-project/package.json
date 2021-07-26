@@ -1,12 +1,13 @@
 {
-  "//": 
-  ["Rename this sample file to package.json to use on your project."
-  , "The sample-package.json file will be overwritten in updates/reinstalls."
-  ],
-  "name": "sample-node-project",
+  "name": "devjs_node-compiled-for-mobile-android-ios",
   "version": "0.0.1",
-  "description": "node part of the project",
-  "main": "main.js",
-  "author": "janeasystems",
-  "license": ""
+  "description": "compiled node",
+  "main": "__devjs__mobile__node__compiled.js",
+  "author": "devjs",
+  "license": "",
+  "dependencies": {
+    "express": "^4.17.1",
+    "npm": "^7.20.1",
+    "npm-programmatic": "^0.0.12"
+  }
 }

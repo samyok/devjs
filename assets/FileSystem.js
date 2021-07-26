@@ -17,7 +17,7 @@ export async function writeFile(filePath, content, encoding = 'utf8') {
 }
 
 export async function readFile(filePath) {
-    if(filePath.startsWith(root)){
+    if (filePath.startsWith(root)) {
         filePath = filePath.replace(root, "");
     }
     return {
@@ -51,7 +51,7 @@ async function fileListing(dir) {
 }
 
 export async function readDir(dir) {
-    try{
+    try {
         await RNFS.readDir(root);
     } catch (e) {
         await RNFS.mkdir(root);
@@ -61,4 +61,40 @@ export async function readDir(dir) {
 
 export async function mkProject(projectName) {
     await RNFS.mkdir(root + projectName);
+}
+
+export async function copyRecursive(src, destination) {
+    let source = root + src;
+    console.log(`${source} => ${destination}`);
+    // reads items from source directory
+    const items = await RNFS.readDir(source);
+
+    // creates destination directory
+    console.log(`Output directory: ${destination}`);
+    await RNFS.mkdir(destination);
+
+    // for each item
+    await items.forEach(async item => {
+        //  checks if it is a file
+        if (item.isFile() === true) {
+            console.log(`Input file: ${item.path}`);
+            const destinationFile = destination + '/' + item.name;
+
+            // copies file
+            console.log(`Output file: ${destinationFile}`);
+            try {
+                await RNFS.copyFile(item.path, destinationFile);
+            } catch (e) {
+                let fileContent = await RNFS.readFile(item.path)
+                await RNFS.writeFile(destinationFile, fileContent, 'utf8');
+            }
+        } else {
+            console.log(`Input directory: ${item.path}`);
+
+            const subDirectory = source + '/' + item.name;
+            const subDestinationDirectory = destination + '/' + item.name;
+
+            await copyRecursive(subDirectory, subDestinationDirectory);
+        }
+    });
 }
