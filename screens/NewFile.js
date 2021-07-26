@@ -32,7 +32,7 @@ const NewFile = ({navigation}) => {
                                     onPress={createProject.bind(this)}>
                     <View style={styles.newProjectContainer}>
                         <PlusCircleIconOutline  color='#C5D9FF' size={18}/>
-                        <Text style={styles.newProject}>Create Project</Text>
+                        <Text style={styles.newProject}>Create File</Text>
                     </View>
                 </TouchableHighlight>
             </View>
