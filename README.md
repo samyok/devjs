@@ -2,10 +2,15 @@
 ## How we built it
 We used React Native to build the front-end of our application, which includes defining transitions between screens using the ```StackNavigator```.
 
-## Inspiration
-We recently saw a video of Nepalese students, who could not afford a laptop, coding on their mobile phones. As fortunate as our team is, with so many resources within arm's reach, we could not fathom how difficult it must be for these students to create apps and programs (let alone functional ones).
+In the back end, devJS runs a compiled version of NodeJS ChakraCore on iOS and uses Termux on Android.
 
-After investigating the current IDEs available in Google Play and App stores, we discovered that the current offerings compiled code through servers online. We thought that if students could not afford a laptop or PC, they may not have reliable internet service, which makes it rather difficult for them to use such apps. 
+
+## Inspiration
+One of our team members, Samyok, recently encountered a Hacker News posts of a Nepalese student who could not afford a laptop and practiced programming on their mobile phone. As a nepalese himself and as a team with so many resources within arm's reach, we could not fathom how difficult it must be for this student to create apps and programs (let alone functional ones).
+
+After hearing about this one Nepalese student, we were curious to know how big the issue really was. How many people experience something similar? As bizarre as it may seem, it turns out that approximately 28% of adults age 18-29 rely on mobile devices only for online access (Pew Research). GSMA Intelligence predicts that in 2025, this figure will be 45% for *all* populations.
+
+When investigating the current IDEs available in Google Play and App stores, we discovered that the current offerings compiled code through servers online. If students could not afford a laptop or PC, it's quite possible they may not have access to reliable internet service either, which makes it rather difficult for them to use such mobiles IDEs. 
 
 Hence, we decided to create a comparable IDE experience, without reliance on internet access, to provide wannabe-developers worldwide the resources to achieve their dreams.
 
