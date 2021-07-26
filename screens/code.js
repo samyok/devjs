@@ -13,6 +13,7 @@ const DEFAULT_CONTENT = `console.log('hello world!')`;
 
 const App = ({navigation}) => {
     const file = navigation.getParam('filePath');
+    const fileExt = file.split('.').pop();
 
     const [loading, setLoading] = useState(true);
     const [initWebViewParams, setInitWebViewParams] = useState({});
@@ -57,9 +58,7 @@ const App = ({navigation}) => {
     }
 
     const initializeContentJs = `
-  editor.initializeContent(${
-        initWebViewParams.initialString || DEFAULT_CONTENT
-    });
+      editor.initializeContent(${initWebViewParams.initialString || DEFAULT_CONTENT}, '${fileExt}');
   `;
     const initialInjectedJs = `
       ${codeMirrorJs}
